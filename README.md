@@ -5,6 +5,10 @@ I recommend using `ipset`. Because `iptables` has pretty bad performance for lar
 
 But [ipset](https://ipset.netfilter.org/) is desined to block large IP pools.
 
+This benchmark tells everything:
+
+![alt text](https://pchaigno.github.io/assets/egress-filtering-benchmark/udp-throughput-with-jit.svg)
+
 ## Variables
 
 There are a few variables which you may want to take a look at.
