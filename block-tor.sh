@@ -24,9 +24,16 @@ fetch_tor_ips() {
 	export IPS=$(cat /tmp/tor-ips | grep -v ':' | iprange)
 }
 
+is_list_valid() {
+	if [[ $(cat /tmp/tor-ips | wc -l) -le 100 ]]; then
+		echo "Less than 100 IPs? It's probably broken, exiting"
+		exit 1
+	fi
+}
 
 # If iptables argument is passed, clear everyhing and add new rules with new IPs
 iptables_block() {
+	is_list_valid
 	iptables -D INPUT -j BLOCK_TOR
 	iptables -F $CHAIN
 	iptables -X $CHAIN
@@ -40,6 +47,7 @@ iptables_block() {
 }
 
 ipset_block() {
+	is_list_valid
 	iptables -D INPUT -m set --match-set $SET src -j DROP
 	sleep 0.2
 	ipset destroy $SET
